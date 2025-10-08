@@ -1,5 +1,8 @@
+from __future__ import annotations
+
+
 class Animal:
-    alive = []
+    alive: list["Animal"] = []
 
     def __init__(
             self,
@@ -7,9 +10,19 @@ class Animal:
             health: int = 100,
             hidden: bool = False) -> None:
         self.name = name
-        self.health = health
+        self._health = health
         self.hidden = hidden
         Animal.alive.append(self)
+
+    @property
+    def health(self) -> int:
+        return self._health
+
+    @health.setter
+    def health(self, value: int) -> None:
+        self._health = value
+        if value <= 0:
+            Animal.alive.remove(self)
 
     def __repr__(self) -> str:
         return (f"{{Name: {self.name}, "
